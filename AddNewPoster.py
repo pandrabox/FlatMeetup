@@ -158,17 +158,14 @@ def git_push(message):
     if result.returncode != 0:
         print(f"git add 失敗: {result.stderr}")
         sys.exit(1)
+    print("git add 完了")
     
     # commit
     result = subprocess.run(['git', 'commit', '-m', message], capture_output=True, text=True, encoding='utf-8', errors='replace')
-    if result.returncode != 0:
-        if 'nothing to commit' in result.stdout or 'nothing to commit' in result.stderr:
-            print("変更なし、pushスキップ")
-            return
-        print(f"git commit 失敗: {result.stderr}")
-        sys.exit(1)
+    print(f"git commit: {result.stdout.strip()} {result.stderr.strip()}")
+    # commitが失敗しても続行（nothing to commitでも問題ない）
     
-    # push
+    # push（常に実行）
     result = subprocess.run(['git', 'push'], capture_output=True, text=True, encoding='utf-8', errors='replace')
     if result.returncode != 0:
         print(f"git push 失敗: {result.stderr}")
