@@ -154,13 +154,13 @@ def git_push(message):
     os.chdir(WORK_DIR)
     
     # add
-    result = subprocess.run(['git', 'add', '.'], capture_output=True, text=True)
+    result = subprocess.run(['git', 'add', '.'], capture_output=True, text=True, encoding='utf-8', errors='replace')
     if result.returncode != 0:
         print(f"git add 失敗: {result.stderr}")
         sys.exit(1)
     
     # commit
-    result = subprocess.run(['git', 'commit', '-m', message], capture_output=True, text=True)
+    result = subprocess.run(['git', 'commit', '-m', message], capture_output=True, text=True, encoding='utf-8', errors='replace')
     if result.returncode != 0:
         if 'nothing to commit' in result.stdout or 'nothing to commit' in result.stderr:
             print("変更なし、pushスキップ")
@@ -169,7 +169,7 @@ def git_push(message):
         sys.exit(1)
     
     # push
-    result = subprocess.run(['git', 'push'], capture_output=True, text=True)
+    result = subprocess.run(['git', 'push'], capture_output=True, text=True, encoding='utf-8', errors='replace')
     if result.returncode != 0:
         print(f"git push 失敗: {result.stderr}")
         sys.exit(1)
